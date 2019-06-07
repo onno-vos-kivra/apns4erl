@@ -1,3 +1,24 @@
+KIVRA
+
+To use this, take the apns certificate from `pass show certs/apns-production` and split the key and cert into two files and change the path in `test/test.config`.
+
+```
+> rebar3 compile
+> erl -pa _build/default/lib/*/ebin -config test/test.config
+```
+
+``` erlang
+apns:start().
+{ok, Pid} = apns:connect(cert, my_first_connection).
+DeviceId = <<"decideid">>.
+Notification = #{ <<"aps">> =>
+                      #{ <<"alert">> =>
+                             #{ <<"title">> => <<"fancy title">>
+                              , <<"body">> => <<"sexy body">>}
+                       , <<"sound">> => <<"default">>
+                       , <<"badge">> => 0}}.
+apns:push_notification(my_first_connection, DeviceId, Notification).
+```
 
 Apns4erl v2 [![Build Status](https://travis-ci.org/inaka/apns4erl.svg?branch=master)](https://travis-ci.org/inaka/apns4erl)[![codecov](https://codecov.io/gh/inaka/apns4erl/branch/master/graph/badge.svg)](https://codecov.io/gh/inaka/apns4erl)
 ========
